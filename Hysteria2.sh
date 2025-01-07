@@ -42,10 +42,6 @@ PORT=2096
 # 生成随机密码
 RANDOM_PSK=PGG2EYOvsFt2lAQTD7lqHeRxz2KxvllEDKcUrtizP
 
-# 获取服务器证书的 SHA256 指纹
-SHA256=$(openssl x509 -in /etc/hysteria/server.crt -noout -fingerprint -sha256 | cut -d'=' -f2)
-echo $SHA256
-
 # 生成配置文件
 cat << EOF > /etc/hysteria/config.yaml
 listen: :${PORT}
@@ -103,7 +99,7 @@ cat << EOF > /etc/hysteria/config.txt
 
 hy2://${RANDOM_PSK}@${HOST_IP}:${PORT}?insecure=1&sni=www.bing.com#${IP_COUNTRY}
 
-${IP_COUNTRY} = hysteria2, ${HOST_IP}, ${PORT}, password = ${RANDOM_PSK}, skip-cert-verify=true, sni=www.bing.com, server-cert-fingerprint-sha256=${SHA256}, port-hopping=20000-25000, port-hopping-interval=30
+${IP_COUNTRY} = hysteria2, ${HOST_IP}, ${PORT}, password = ${RANDOM_PSK}, skip-cert-verify=true, sni=www.bing.com, port-hopping=20000-25000, port-hopping-interval=30
 EOF
 
 # 输出客户端配置信息
@@ -123,4 +119,4 @@ EOF
 echo
 echo "hy2://${RANDOM_PSK}@${HOST_IP}:${PORT}?insecure=1&sni=www.bing.com#${IP_COUNTRY}"
 echo
-echo "${IP_COUNTRY} = hysteria2, ${HOST_IP}, ${PORT}, password = ${RANDOM_PSK}, skip-cert-verify=true, sni=www.bing.com, server-cert-fingerprint-sha256=${SHA256}, port-hopping=20000-25000, port-hopping-interval=30"
+echo "${IP_COUNTRY} = hysteria2, ${HOST_IP}, ${PORT}, password = ${RANDOM_PSK}, skip-cert-verify=true, sni=www.bing.com, port-hopping=20000-25000, port-hopping-interval=30"
