@@ -36,19 +36,11 @@ bash <(curl -fsSL https://get.hy2.sh/)
 # 生成自签证书
 openssl req -x509 -nodes -newkey ec:<(openssl ecparam -name prime256v1) -keyout /etc/hysteria/server.key -out /etc/hysteria/server.crt -subj "/CN=bing.com" -days 36500 && sudo chown hysteria /etc/hysteria/server.key && sudo chown hysteria /etc/hysteria/server.crt
 
-# 生成随机端口号并检查端口是否被占用
-while true; do
-    RANDOM_PORT=$(shuf -i 50000-55000 -n 1)
-    if ! lsof -i:$RANDOM_PORT > /dev/null; then
-        echo "Selected port: $RANDOM_PORT"
-        break
-    else
-        echo "Port $RANDOM_PORT is in use, selecting a new one."
-    fi
-done
+# 设定固定端口号
+PORT=2096
 
 # 生成随机密码
-RANDOM_PSK=$(openssl rand -base64 12)
+RANDOM_PSK=PGG2EYOvsFt2lAQTD7lqHeRxz2KxvllEDKcUrtizP
 
 # 获取服务器证书的 SHA256 指纹
 SHA256=$(openssl x509 -in /etc/hysteria/server.crt -noout -fingerprint -sha256 | cut -d'=' -f2)
@@ -56,7 +48,7 @@ echo $SHA256
 
 # 生成配置文件
 cat << EOF > /etc/hysteria/config.yaml
-listen: :${RANDOM_PORT} 
+listen: :${PORT}
 
 tls:
   cert: /etc/hysteria/server.crt
@@ -89,20 +81,19 @@ IP_COUNTRY=$(curl -s http://ipinfo.io/${HOST_IP}/country)
 # 安装 iptables-persistent
 ${PACKAGE_INSTALL} iptables-persistent
 
-# 端口跳跃设置：将50000-55000范围的UDP流量重定向到随机生成的端口
-iptables -t nat -A PREROUTING -p udp --dport 50000:55000 -j DNAT --to-destination :${RANDOM_PORT}
-ip6tables -t nat -A PREROUTING -p udp --dport 50000:55000 -j DNAT --to-destination :${RANDOM_PORT}
+# 端口跳跃设置：将20000-25000范围的UDP流量重定向到固定端口2096
+iptables -t nat -A PREROUTING -p udp --dport 20000:25000 -j DNAT --to-destination :${PORT}
+ip6tables -t nat -A PREROUTING -p udp --dport 20000:25000 -j DNAT --to-destination :${PORT}
 
 # 保存 iptables 规则
 netfilter-persistent save
-
 
 # 生成客户端配置信息
 cat << EOF > /etc/hysteria/config.txt
 - name: ${IP_COUNTRY}
   type: hysteria2
   server: ${HOST_IP}
-  port: ${RANDOM_PORT}
+  port: ${PORT}
   password: ${RANDOM_PSK}
   alpn:
     - h3
@@ -110,11 +101,10 @@ cat << EOF > /etc/hysteria/config.txt
   skip-cert-verify: true
   fast-open: true
 
-hy2://${RANDOM_PSK}@${HOST_IP}:${RANDOM_PORT}?insecure=1&sni=www.bing.com#${IP_COUNTRY}
+hy2://${RANDOM_PSK}@${HOST_IP}:${PORT}?insecure=1&sni=www.bing.com#${IP_COUNTRY}
 
-${IP_COUNTRY} = hysteria2, ${HOST_IP}, ${RANDOM_PORT}, password = ${RANDOM_PSK}, skip-cert-verify=true, sni=www.bing.com,  server-cert-fingerprint-sha256=${SHA256}, port-hopping=50000-55000, port-hopping-interval=30
+${IP_COUNTRY} = hysteria2, ${HOST_IP}, ${PORT}, password = ${RANDOM_PSK}, skip-cert-verify=true, sni=www.bing.com, server-cert-fingerprint-sha256=${SHA256}, port-hopping=20000-25000, port-hopping-interval=30
 EOF
-
 
 # 输出客户端配置信息
 echo "Hysteria2 安装成功"
@@ -122,7 +112,7 @@ cat << EOF
 - name: ${IP_COUNTRY}
   type: hysteria2
   server: ${HOST_IP}
-  port: ${RANDOM_PORT}
+  port: ${PORT}
   password: ${RANDOM_PSK}
   alpn:
     - h3
@@ -131,6 +121,6 @@ cat << EOF
   fast-open: true
 EOF
 echo
-echo "hy2://${RANDOM_PSK}@${HOST_IP}:${RANDOM_PORT}?insecure=1&sni=www.bing.com#${IP_COUNTRY}"
+echo "hy2://${RANDOM_PSK}@${HOST_IP}:${PORT}?insecure=1&sni=www.bing.com#${IP_COUNTRY}"
 echo
-echo "${IP_COUNTRY} = hysteria2, ${HOST_IP}, ${RANDOM_PORT}, password = ${RANDOM_PSK}, skip-cert-verify=true, sni=www.bing.com,  server-cert-fingerprint-sha256=${SHA256}, port-hopping=50000-55000, port-hopping-interval=30"
+echo "${IP_COUNTRY} = hysteria2, ${HOST_IP}, ${PORT}, password = ${RANDOM_PSK}, skip-cert-verify=true, sni=www.bing.com, server-cert-fingerprint-sha256=${SHA256}, port-hopping=20000-25000, port-hopping-interval=30"
