@@ -32,8 +32,5 @@ ip6tables -t nat -L -v -n
 ```
 tcpdump -nn udp 'portrange 20000-25000'
 ```
-查看自签证书指纹
-```
-openssl x509 -in /etc/hysteria/server.crt -noout -fingerprint -sha256
-```
+
 ## 项目地址：https://github.com/apernet/hysteria
