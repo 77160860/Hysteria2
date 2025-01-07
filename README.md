@@ -5,7 +5,7 @@
 
 ## 一键脚本
 ```
-bash <(curl -fsSL hysteria-eight.vercel.app)
+bash <(curl -fsSL https://raw.githubusercontent.com/77160860/Hysteria2/refs/heads/main/Hysteria2.sh)
 ```
 
 ## 详细说明
