@@ -99,7 +99,7 @@ cat << EOF > /etc/hysteria/config.txt
 
 hy2://${RANDOM_PSK}@${HOST_IP}:${PORT}?insecure=1&sni=www.bing.com#${IP_COUNTRY}
 
-${IP_COUNTRY} = hysteria2, ${HOST_IP}, ${PORT}, password = ${RANDOM_PSK}, skip-cert-verify=true, sni=www.bing.com, port-hopping=20000-25000, port-hopping-interval=30
+${IP_COUNTRY} = hysteria2, ${HOST_IP}, ${PORT}, password = ${RANDOM_PSK}, skip-cert-verify=true, sni=www.bing.com, port-hopping=50000-55000, port-hopping-interval=30
 EOF
 
 # 输出客户端配置信息
@@ -119,4 +119,4 @@ EOF
 echo
 echo "hy2://${RANDOM_PSK}@${HOST_IP}:${PORT}?insecure=1&sni=www.bing.com#${IP_COUNTRY}"
 echo
-echo "${IP_COUNTRY} = hysteria2, ${HOST_IP}, ${PORT}, password = ${RANDOM_PSK}, skip-cert-verify=true, sni=www.bing.com, port-hopping=20000-25000, port-hopping-interval=30"
+echo "${IP_COUNTRY} = hysteria2, ${HOST_IP}, ${PORT}, password = ${RANDOM_PSK}, skip-cert-verify=true, sni=www.bing.com, port-hopping=50000-55000, port-hopping-interval=30"
