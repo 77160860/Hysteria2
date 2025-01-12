@@ -18,8 +18,8 @@ bash <(curl -fsSL https://raw.githubusercontent.com/77160860/Hysteria2/refs/head
 ## 端口跳跃
 ```
 apt install iptables-persistent
-iptables -t nat -A PREROUTING -p udp --dport 20000:25000  -j DNAT --to-destination :PORT
-ip6tables -t nat -A PREROUTING -p udp --dport 20000:25000  -j DNAT --to-destination :PORT
+iptables -t nat -A PREROUTING -p udp --dport 50000:55000  -j DNAT --to-destination :PORT
+ip6tables -t nat -A PREROUTING -p udp --dport 50000:55000  -j DNAT --to-destination :PORT
 netfilter-persistent save
 ```
 
@@ -30,7 +30,7 @@ ip6tables -t nat -L -v -n
 ```
 筛选 UDP 数据包
 ```
-tcpdump -nn udp 'portrange 20000-25000'
+tcpdump -nn udp 'portrange 50000-55000'
 ```
 
 ## 项目地址：https://github.com/apernet/hysteria
