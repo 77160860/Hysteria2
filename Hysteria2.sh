@@ -77,9 +77,9 @@ IP_COUNTRY=$(curl -s http://ipinfo.io/${HOST_IP}/country)
 # 安装 iptables-persistent
 ${PACKAGE_INSTALL} iptables-persistent
 
-# 端口跳跃设置：将20000-25000范围的UDP流量重定向到固定端口2096
-iptables -t nat -A PREROUTING -p udp --dport 20000:25000 -j DNAT --to-destination :${PORT}
-ip6tables -t nat -A PREROUTING -p udp --dport 20000:25000 -j DNAT --to-destination :${PORT}
+# 端口跳跃设置：将50000-55000范围的UDP流量重定向到固定端口36868
+iptables -t nat -A PREROUTING -p udp --dport 50000:55000 -j DNAT --to-destination :${PORT}
+ip6tables -t nat -A PREROUTING -p udp --dport 50000:55000 -j DNAT --to-destination :${PORT}
 
 # 保存 iptables 规则
 netfilter-persistent save
