@@ -37,7 +37,7 @@ bash <(curl -fsSL https://get.hy2.sh/)
 openssl req -x509 -nodes -newkey ec:<(openssl ecparam -name prime256v1) -keyout /etc/hysteria/server.key -out /etc/hysteria/server.crt -subj "/CN=bing.com" -days 36500 && sudo chown hysteria /etc/hysteria/server.key && sudo chown hysteria /etc/hysteria/server.crt
 
 # 设定固定端口号
-PORT=2096
+PORT=36868
 
 # 生成随机密码
 RANDOM_PSK=PGG2EYOvsFt2lAQTD7lqHeRxz2KxvllEDKcUrtizP
