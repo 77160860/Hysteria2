@@ -58,7 +58,7 @@ if [ $? -eq 0 ]; then
 echo -e "${GREEN}Hysteria 安装成功${RESET}"
 echo "$(date '+%Y-%m-%d %H:%M:%S') - Hysteria 安装成功" >> "$LOG_FILE"
 
-# --- 已修正：创建快捷命令 ---
+# --- 真正已修正：创建快捷命令 ---
 echo -e "${CYAN}正在创建快捷命令 'hy'...${RESET}"
 # 使用确定的文件名 'hysteria_manager.sh' 代替不稳定的 '\$0'
 if cp "hysteria_manager.sh" "$SHORTCUT_PATH"; then
