@@ -58,9 +58,10 @@ if [ $? -eq 0 ]; then
 echo -e "${GREEN}Hysteria 安装成功${RESET}"
 echo "$(date '+%Y-%m-%d %H:%M:%S') - Hysteria 安装成功" >> "$LOG_FILE"
 
-# --- 新增代码：创建快捷命令 ---
+# --- 已修正：创建快捷命令 ---
 echo -e "${CYAN}正在创建快捷命令 'hy'...${RESET}"
-if cp "\$0" "$SHORTCUT_PATH"; then
+# 使用确定的文件名 'hysteria_manager.sh' 代替不稳定的 '\$0'
+if cp "hysteria_manager.sh" "$SHORTCUT_PATH"; then
 chmod +x "$SHORTCUT_PATH"
 echo -e "${GREEN}快捷命令 'hy' 创建成功！${RESET}"
 echo -e "${YELLOW}现在您可以随时在终端输入 'hy' 来运行此管理面板。${RESET}"
@@ -68,7 +69,7 @@ else
 echo -e "${RED}创建快捷命令失败。请检查 /usr/local/bin 目录是否存在或有写入权限。${RESET}"
 echo "$(date '+%Y-%m-%d %H:%M:%S') - 创建快捷命令失败" >> "$LOG_FILE"
 fi
-# --- 新增代码结束 ---
+# --- 修正结束 ---
 
 else
 echo -e "${RED}Hysteria 安装失败${RESET}"
@@ -86,7 +87,6 @@ bash <(curl -fsSL https://get.hy2.sh/) --remove
 if [ $? -ne 0 ]; then
 echo -e "${RED}卸载脚本执行失败${RESET}"
 echo "$(date '+%Y-%m-%d %H:%M:%S') - 卸载脚本执行失败" >> "$LOG_FILE"
-# 即使卸载失败，也继续尝试清理
 fi
 
 # 清除 iptables 规则
@@ -96,7 +96,7 @@ ip6tables -t nat -F && ip6tables -t nat -X
 echo -e "${GREEN}Hysteria 卸载操作完成。${RESET}"
 echo "$(date '+%Y-%m-%d %H:%M:%S') - Hysteria 卸载操作完成" >> "$LOG_FILE"
 
-# --- 新增代码：移除快捷命令 ---
+# --- 移除快捷命令 ---
 if [ -f "$SHORTCUT_PATH" ]; then
 echo -e "${CYAN}正在移除快捷命令 'hy'...${RESET}"
 if rm -f "$SHORTCUT_PATH"; then
@@ -105,7 +105,7 @@ else
 echo -e "${RED}移除快捷命令 'hy' 失败。请手动删除: ${SHORTCUT_PATH}${RESET}"
 fi
 fi
-# --- 新增代码结束 ---
+# --- 代码结束 ---
 }
 
 # 启动 Hysteria
